@@ -9,7 +9,7 @@
                 </li>
                 <li>
                     Password:<br>
-                    <input type="text" name="username">                    
+                    <input type="text" name="password">                    
                 </li>
                 <li>
                     <input type="submit" value="Log in">                    

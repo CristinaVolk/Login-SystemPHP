@@ -1,5 +1,12 @@
 <aside id="Just_A_Random_ID">
             
-    <?php include 'includes/widgets/login.php' ?>
+<?php
+    if (is_logged()=== true){
+        echo 'Logged in';
+    } else {
+        include 'includes/widgets/login.php';
+    }    
+    
+?>
     
 </aside>

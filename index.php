@@ -5,4 +5,12 @@ include 'includes/overall/over-header.php'; ?>
       <h1>Home</h1>
       <p>Just a template.</p>
 
+<?php  
+if (isset($_SESSION['user_id'])){
+      echo 'Logged in';
+} else {
+      echo 'Not logged in';
+}
+?>
+
 <?php include 'includes/overall/over-footer.php'; ?>
