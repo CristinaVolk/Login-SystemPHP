@@ -1,8 +1,8 @@
 <nav>
     <ul>
-        <li><a href="../wolf">Home</a></li>
-        <li><a href="../wolf/main">Main</a></li>
-        <li><a href="../wolf/my-account">My account</a></li>
-        <li><a href="../privacy-policy">Privacy Policy</a></li>
+        <li><a href="index.php">Home</a></li>
+        <li><a href="downloads.php">Downloads</a></li>
+        <li><a href="forum.php">Forum</a></li>
+        <li><a href="contact.php">Contact</a></li>
     </ul>
 </nav>
