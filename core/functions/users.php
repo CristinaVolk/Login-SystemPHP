@@ -3,6 +3,14 @@
 $upOne = dirname(__DIR__, 1);
 include $upOne.'\database\connect.php';
 
+function change_password($user_id, $password){
+    $user_id = (int)$user_id;    
+    $password = md5($password);
+ 
+    $query ="UPDATE `wolves` SET `password`='$password' WHERE `user_id`=$user_id";    
+    mysqli_query($GLOBALS['conn'], $query);
+}
+
 function register_user($register_data){
     array_walk($register_data, 'array_sanitize');
     $register_data['password'] = md5($register_data['password']);
@@ -14,8 +22,7 @@ function register_user($register_data){
     mysqli_query($GLOBALS['conn'], $query);
 }
 
-function user_count() {  
-    
+function user_count() {     
     $query = "SELECT COUNT(`user_id`) FROM `wolves` WHERE `active` = 1";
     $row = mysqli_fetch_array(mysqli_query($GLOBALS['conn'], $query));  
     $users = $row[0];  
