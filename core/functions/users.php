@@ -3,6 +3,32 @@
 $upOne = dirname(__DIR__, 1);
 include $upOne.'\database\connect.php';
 
+function update_user($update_data){
+    global $session_user_id;
+    $update = array();
+    array_walk($update_data, 'array_sanitize');
+
+    foreach ($update_data as $field=>$data) {
+        $update[] = '`'.$field.'`=\''.$data.'\'';
+    }
+
+    $query ="UPDATE `wolves` SET ".implode(', ', $update)." WHERE `user_id`=$session_user_id";
+    mysqli_query($GLOBALS['conn'], $query);                   
+}
+
+function activate($email, $email_code){
+    $email = mysqli_real_escape_string($GLOBALS['conn'], $email);    
+    $email_code = mysqli_real_escape_string($GLOBALS['conn'], $email_code);
+    $query1 = "SELECT `user_id` FROM `wolves` WHERE `email` = '$email' AND `email_code`='$email_code' LIMIT 1";    
+    $result = mysqli_fetch_object(mysqli_query($GLOBALS['conn'], $query1)) ? true : false; 
+
+    if ($result === true){
+        $query2 ="UPDATE `wolves` SET `active`= 1 WHERE `email`='$email'";    
+        mysqli_query($GLOBALS['conn'], $query2);
+        return true;
+    } else return false;
+}
+
 function change_password($user_id, $password){
     $user_id = (int)$user_id;    
     $password = md5($password);
@@ -20,6 +46,7 @@ function register_user($register_data){
 
     $query ="INSERT INTO `wolves` ($fields) VALUES ($data)";
     mysqli_query($GLOBALS['conn'], $query);
+    email($register_data['email'], 'Activate your account', "Hello ".$register_data['first_name'].",\n\n You need to activate your account, so use the link below:\n\n http://localhost/Login-SystemPHP/activate.php?email=".$register_data['email']."&email_code=".$register_data['email_code']."\n\n - justwolf.com");                                 
 }
 
 function user_count() {     

@@ -6,7 +6,13 @@
                 <a href="logout.php">Log out</a>
             </li>
             <li>
+                <a href="profile.php">Change Password</a>
+            </li>
+            <li>
                 <a href="changepassword.php">Change Password</a>
+            </li>
+            <li>
+                <a href="settings.php">Settings</a>
             </li>
         </ul>
     </div>

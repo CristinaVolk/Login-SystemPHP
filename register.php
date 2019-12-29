@@ -44,7 +44,7 @@ if (empty($_POST) === false){
 <?php
 
 if (isset($_GET['success']) && empty($_GET['success'])){
-    echo 'Your password has been changed successfully!';
+    echo 'You have been registered successfully! Please check your email to activate your account';
 } else {
         if (empty($_POST) === false && empty($errors) === true){
             $registered_data = array(
@@ -52,7 +52,8 @@ if (isset($_GET['success']) && empty($_GET['success'])){
                 'password' => $_POST['password'],
                 'first_name' => $_POST['first_name'],
                 'last_name' => $_POST['last_name'],
-                'email' => $_POST['email']
+                'email' => $_POST['email'],
+                'email_code' => md5($_POST['username'].microtime())
             );
         
             register_user($registered_data);

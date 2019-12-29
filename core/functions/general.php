@@ -3,6 +3,18 @@
 $upOne = dirname(__DIR__, 1);
 include $upOne.'\database\connect.php';
 
+function email($to, $subject, $body){
+    $headers = 'From: volkkristina314@gmail.com';
+    mail($to, $subject, $body, $headers);
+}
+
+function logged_in_redirect(){
+    if (is_logged() === true){
+        header('Location: index.php');
+        exit();
+    }
+}
+
 function protect_page(){
     if (is_logged() === false){
         header('Location: protected.php');

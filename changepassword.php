@@ -27,7 +27,7 @@ include 'includes/overall/over-header.php'; ?>
 <h1>Change Password</h1>
 <?php 
 if (isset($_GET['success']) && empty($_GET['success'])){
-    echo 'You have been registered successfully!';
+    echo 'Your password has been changed successfully!';
 } else {
     if (empty($_POST) === false && empty($errors) === true){
             change_password($session_user_id, $_POST['password']);
