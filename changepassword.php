@@ -19,16 +19,18 @@ if (empty($_POST) === false){
     } else {
         $errors[] = 'Your current password is incorrect';
     }
-    print_r($errors);
 }
 
 include 'includes/overall/over-header.php'; ?>
 
 <h1>Change Password</h1>
 <?php 
-if (isset($_GET['success']) && empty($_GET['success'])){
+if (isset($_GET['success']) === true && empty($_GET['success'])===true){
     echo 'Your password has been changed successfully!';
 } else {
+    if (isset($_GET['force'])=== true && empty($_GET['success'])=== true){
+        echo 'You must change your password now that you have requested.';        
+    }
     if (empty($_POST) === false && empty($errors) === true){
             change_password($session_user_id, $_POST['password']);
             header('Location: changepassword.php?success');        

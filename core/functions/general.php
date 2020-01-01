@@ -15,6 +15,14 @@ function logged_in_redirect(){
     }
 }
 
+function admin_protect(){
+    global $user_data;
+    if (is_admin($user_data->user_id) === false){
+        header('Location: index.php');
+        exit();
+    }
+}
+
 function protect_page(){
     if (is_logged() === false){
         header('Location: protected.php');
@@ -24,12 +32,12 @@ function protect_page(){
 
 
 function array_sanitize($item){
-    $item = mysqli_real_escape_string($GLOBALS['conn'], $item);
+    $item = strip_tags(mysqli_real_escape_string($GLOBALS['conn'], $item));
 }
 
 
 function sanitize($data){
-    return mysqli_real_escape_string($GLOBALS['conn'], $data);
+    return strip_tags(mysqli_real_escape_string($GLOBALS['conn'], $data));
 }
 
 function output_errors($errors){ 

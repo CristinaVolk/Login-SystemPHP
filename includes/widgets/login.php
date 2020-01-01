@@ -5,20 +5,24 @@
             <ul id="login">
                 <li>
                     Username:<br>
-                    <input type="text" name="username">                    
+                    <input type="text" name="username">
                 </li>
                 <li>
                     Password:<br>
-                    <input type="text" name="password">                    
+                    <input type="text" name="password">
                 </li>
                 <li>
-                    <input type="submit" value="Log in">                    
+                    <input type="submit" value="Log in">
                 </li>
                 <li>
                     <a href="register.php">Register</a>
-                </li>            
+                </li>
+                Forgotten your <a href="recover.php?mode=username">username</a> or <a
+            href="recover.php?mode=password">password</a>
             </ul>
         </form>
-            Loign form
+
+        
+
     </div>
 </div>

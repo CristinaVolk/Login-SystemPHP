@@ -3,16 +3,38 @@
 $upOne = dirname(__DIR__, 1);
 include $upOne.'\database\connect.php';
 
-function update_user($update_data){
+function is_admin($user_id){
+    $user_id = (int)$user_id;
+
+    $query = "SELECT COUNT(`user_id`) FROM `wolves` WHERE `user_id` = '$user_id' AND `type`=1";
+    $row = mysqli_fetch_array(mysqli_query($GLOBALS['conn'], $query));  
+    return $row[0]? true: false;
+}
+
+function recover ($mode, $email){
+    $mode = sanitize($mode);
+    $email = sanitize($email);
+
+    $user_data = user_data(user_id_from_email($email),'user_id', 'first_name', 'username');
+    if ($mode == 'username'){
+        email($email, 'Your username', 'Hello'.$user_data->first_name.",\n\nYour username is: ".$user_data->username.",\n\n -justwolf.com");
+    } else if ($mode == 'password'){
+        $generated_password = substr(md5(rand(999, 999999)), 0, 8);
+        change_password($user_data->user_id, $generated_password);
+        email($email, 'Password recovery', 'Hello'.$user_data->first_name.",\n\nYour password is: ".$generated_password.",\n\n -justwolf.com");
+        update_user($user_data->user_id, array('password_recover'=>'1'));
+    }
+}
+
+function update_user($user_id, $update_data){
     global $session_user_id;
     $update = array();
     array_walk($update_data, 'array_sanitize');
 
-    foreach ($update_data as $field=>$data) {
-        $update[] = '`'.$field.'`=\''.$data.'\'';
+    foreach ($update_data as $field=>$data) {         
+        $update[] = '`'.$field.'`=\''.sanitize($data).'\'';
     }
-
-    $query ="UPDATE `wolves` SET ".implode(', ', $update)." WHERE `user_id`=$session_user_id";
+    $query ="UPDATE `wolves` SET ".implode(', ', $update)." WHERE `user_id`=$user_id";
     mysqli_query($GLOBALS['conn'], $query);                   
 }
 
@@ -33,8 +55,9 @@ function change_password($user_id, $password){
     $user_id = (int)$user_id;    
     $password = md5($password);
  
-    $query ="UPDATE `wolves` SET `password`='$password' WHERE `user_id`=$user_id";    
+    $query ="UPDATE `wolves` SET `password`='$password', `password_recover`= 0 WHERE `user_id`=$user_id";    
     mysqli_query($GLOBALS['conn'], $query);
+
 }
 
 function register_user($register_data){
@@ -102,6 +125,15 @@ function user_active($username) {
     return  mysqli_fetch_object(mysqli_query($GLOBALS['conn'], $query)) ? true : false;    
 }
 
+function user_id_from_email($email) {
+    
+    $email = sanitize($email);
+
+    $query = "SELECT `user_id` FROM `wolves` WHERE `email` = '$email'";
+    $value = mysqli_fetch_object(mysqli_query($GLOBALS['conn'], $query));
+    //echo mysqli_fetch_object(mysqli_query($GLOBALS['conn'], $query)) ? $value->user_id : 0;
+    return  mysqli_fetch_object(mysqli_query($GLOBALS['conn'], $query)) ? $value->user_id : 0;    
+}
 function user_id_from_username($username) {
     
     $username = sanitize($username);

@@ -16,7 +16,7 @@ if (empty($_POST) === false){
     if (empty($errors) === true){
         if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false){
             $errors[] = 'A valid email address is required';
-        } else if (if_email_exists($_POST['email']) === true && $user_data->email === $_POST['email']){
+        } else if (if_email_exists($_POST['email']) === true && $user_data->email !== $_POST['email']){
             $errors[] = "Sorry, the email '".$_POST['email']."' is already in use";
             
         };
@@ -36,7 +36,7 @@ if (empty($_POST) === false){
                 'email' => $_POST['email'],               
             );
         
-            update_user($update_data);
+            update_user($session_user_id, $update_data);
             header('Location: settings.php?success');
             exit();
         } else if (empty($errors) === false) {
